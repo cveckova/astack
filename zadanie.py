@@ -56,7 +56,7 @@ while True:
         f=conn_s.makefile(mode="rw",encoding="utf-8")
         stack1= Stack()
         while True:
-            aux=f.readline()
+            aux=f.readline().strip()
             if not aux:
                 #f.write("Client disconnected")
                 break
@@ -64,7 +64,7 @@ while True:
             if aux=="PUSH":
                 num=[]
                 while True:
-                    line=f.readline()
+                    line=f.readline().strip()
                     pomocna=len(num)
                     m=re.match(r"[0-9]+",line)
                     if(line==''):
@@ -84,7 +84,7 @@ while True:
                     
             elif aux=="MULTIPLY":
                 num=[]
-                line=f.readline()
+                line=f.readline().strip()
                 if(line==''):
                     pom=stack1.multiply()
                     if pom==False:
@@ -101,7 +101,7 @@ while True:
             
             elif aux=="ADD":
                 num=[]
-                line=f.readline()
+                line=f.readline().strip()
                 if(line==''):
                     pom=stack1.add()
                     if pom==False:
@@ -118,7 +118,7 @@ while True:
             
             elif aux=="PEEK":
                 num=[]
-                line=f.readline()
+                line=f.readline().strip()
                 if(line==''):
                     ans=stack1.peek()
                     if ans == False:
@@ -136,7 +136,7 @@ while True:
                         
             elif aux=="ZAP":
                 num=[]
-                line=f.readline()
+                line=f.readline().strip()
                 if(line==''):
                     stack1.zap()
                     f.write("100 OK\n")
