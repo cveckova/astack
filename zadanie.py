@@ -37,7 +37,7 @@ class Stack:
     def zap(self):
         self.stack.clear()
 
-IP=""
+IP="127.0.0.1"
 PORT=9999
 bind_address=(IP,PORT)
 
@@ -46,9 +46,8 @@ socket1.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
 
 socket1.bind(bind_address)
 clients={}
-socket1.listen(10)
+socket1.listen(10) 
 
- 
 while True:
     conn_s,addr=socket1.accept()
     if not os.fork():
@@ -56,11 +55,10 @@ while True:
         f=conn_s.makefile(mode="rw",encoding="utf-8")
         stack1= Stack()
         while True:
-            aux=f.readline().strip()
+            aux=f.readline()
             if not aux:
-                #f.write("Client disconnected")
                 break
-            
+            aux = aux.strip() 
             if aux=="PUSH":
                 num=[]
                 while True:
@@ -69,85 +67,88 @@ while True:
                     m=re.match(r"[0-9]+",line)
                     if(line==''):
                         if pomocna==0:
-                            f.write("201 Request content empty\n")
+                            f.write("201 Request content empty\n\n")
                             f.flush()
                             break
                         else:
-                            if not (m.group(1).isdigit()):
-                                f.write("202 Not a number\n")
-                                f.flush()
-                                break
-                            else:
-                                stack1.push(num)
-                                f.write("100 OK")
-                                break
-                    
+                            stack1.push(num)
+                            f.write("100 OK\n\n")
+                            f.flush()
+                            break
+                    else:
+                        if not (m.group(0).isdigit()):
+                            f.write("202 Not a number\n\n")
+                            f.flush()
+                            break
+                        else:
+                            num.append(int(m.group(0)))
+
             elif aux=="MULTIPLY":
-                num=[]
                 line=f.readline().strip()
                 if(line==''):
                     pom=stack1.multiply()
-                    if pom==False:
-                        f.write("203 Stack too short\n")
+                    if not pom:
+                        f.write("203 Stack too short\n\n")
+                        f.flush()
                         break
                     else:
-                        f.write("100 OK\n")
+                        f.write("100 OK\n\n")
                         f.flush()
                         break
                 else:
-                    f.write("204 Request content nonempty\n")
+                    f.write("204 Request content nonempty\n\n")
                     f.flush()
                     break
             
             elif aux=="ADD":
-                num=[]
                 line=f.readline().strip()
                 if(line==''):
                     pom=stack1.add()
-                    if pom==False:
-                        f.write("203 Stack too short\n")
+                    if not pom:
+                        f.write("203 Stack too short\n\n")
+                        f.flush()
                         break
                     else:
-                        f.write("100 OK\n")
+                        f.write("100 OK\n\n")
                         f.flush()
                         break
                 else:
-                    f.write("204 Request content nonempty\n")
+                    f.write("204 Request content nonempty\n\n")
                     f.flush()
                     break
             
             elif aux=="PEEK":
-                num=[]
                 line=f.readline().strip()
                 if(line==''):
                     ans=stack1.peek()
                     if ans == False:
-                        f.write("203 Stack too short\n")
+                        f.write("203 Stack too short\n\n")
+                        f.flush()
                         break
                     else:
                         f.write("100 OK\n")
-                        f.write(ans)
+                        f.write(str(ans))
+                        f.write("\n\n")
                         f.flush()
                         break
                 else:
-                    f.write("204 Request content nonempty\n")
+                    f.write("204 Request content nonempty\n\n")
                     f.flush()
                     break
                         
             elif aux=="ZAP":
-                num=[]
                 line=f.readline().strip()
                 if(line==''):
                     stack1.zap()
-                    f.write("100 OK\n")
+                    f.write("100 OK\n\n")
                     f.flush()
                     break
                 else:
-                    f.write("204 Request content nonempty\n")
+                    f.write("204 Request content nonempty\n\n")
                     f.flush()
                     break
             else:
-                f.write("301 Bad request\n")
+                f.write("301 Bad request\n\n")
                 f.flush()
                 break
                 
