@@ -69,17 +69,14 @@ while True:
                         if pomocna==0:
                             f.write("201 Request content empty\n\n")
                             f.flush()
-                            break
                         else:
                             stack1.push(num)
                             f.write("100 OK\n\n")
                             f.flush()
-                            break
                     else:
                         if not (m.group(0).isdigit()):
                             f.write("202 Not a number\n\n")
                             f.flush()
-                            break
                         else:
                             num.append(int(m.group(0)))
 
@@ -90,15 +87,12 @@ while True:
                     if not pom:
                         f.write("203 Stack too short\n\n")
                         f.flush()
-                        break
                     else:
                         f.write("100 OK\n\n")
                         f.flush()
-                        break
                 else:
                     f.write("204 Request content nonempty\n\n")
                     f.flush()
-                    break
             
             elif aux=="ADD":
                 line=f.readline().strip()
@@ -107,15 +101,12 @@ while True:
                     if not pom:
                         f.write("203 Stack too short\n\n")
                         f.flush()
-                        break
                     else:
                         f.write("100 OK\n\n")
                         f.flush()
-                        break
                 else:
                     f.write("204 Request content nonempty\n\n")
                     f.flush()
-                    break
             
             elif aux=="PEEK":
                 line=f.readline().strip()
@@ -124,17 +115,14 @@ while True:
                     if ans == False:
                         f.write("203 Stack too short\n\n")
                         f.flush()
-                        break
                     else:
                         f.write("100 OK\n")
                         f.write(str(ans))
                         f.write("\n\n")
                         f.flush()
-                        break
                 else:
                     f.write("204 Request content nonempty\n\n")
                     f.flush()
-                    break
                         
             elif aux=="ZAP":
                 line=f.readline().strip()
@@ -142,11 +130,9 @@ while True:
                     stack1.zap()
                     f.write("100 OK\n\n")
                     f.flush()
-                    break
                 else:
                     f.write("204 Request content nonempty\n\n")
                     f.flush()
-                    break
             else:
                 f.write("301 Bad request\n\n")
                 f.flush()
